@@ -1,0 +1,70 @@
+CREATE TYPE color_enum AS ENUM (
+    '#4891FF', -- Blue
+    '#46B9C9', -- Teal
+    '#A3DEC9', -- Mint
+    '#6DC86E', -- Green
+    '#76956B', -- Olive
+    '#EEE16B', -- Yellow
+    '#E8D3B4', -- Beige
+    '#977854', -- Brown
+    '#EBA655', -- Orange
+    '#E55A5A', -- Red
+    '#AD4E4E', -- Maroon
+    '#F67ECE', -- Pink
+    '#B77AC7', -- Purple
+    '#3869B2', -- Navy
+    '#121212', -- Black
+    '#CDCDCD', -- Grey
+    '#FFFFF7', -- White
+    '#FFFBEB', -- Cream
+);
+
+CREATE TYPE item_categories AS ENUM (
+    'outerwear',
+    'tops',
+    'bottoms',
+    'shoes'
+);
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE SCHEMA backend_schema;
+CREATE TABLE backend_schema.user (
+    uid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    username VARCHAR(20) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    private_option BOOL NOT NULL,
+    followers UUID[] NOT NULL,
+    following UUID[] NOT NULL,
+    profile_picture VARCHAR(36)
+);
+
+CREATE TABLE backend_schema.outfit (
+    oid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    title VARCHAR(255) NOT NULL, 
+    clothing_items UUID[] NOT NULL,
+    uid UUID NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fit
+      FOREIGN KEY (uid) 
+      REFERENCES backend_schema.user(uid)
+      ON DELETE CASCADE
+);
+
+CREATE TABLE backend_schema.clothing_item (
+    ciid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    image_url VARCHAR(36) NOT NULL,
+    category item_categories NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    uid UUID NOT NULL,
+    brands VARCHAR[],
+    size VARCHAR(50),
+    color color_enum[] NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT item
+      FOREIGN KEY (uid) 
+      REFERENCES backend_schema.user(uid)
+      ON DELETE CASCADE
+);

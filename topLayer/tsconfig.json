@@ -1,0 +1,19 @@
+{
+	"extends": "expo/tsconfig.base",
+	"compilerOptions": {
+		"strict": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		}
+	},
+  "include": [
+    "./**/*.ts", // Adjust the path to match your TypeScript source files
+    "./**/*.tsx", // TypeScript JSX files
+    ".eslintrc.cjs", // Path to your ESLint configuration file
+    "RootNavigation.tsx",
+    "App.tsx",
+    "i.d.ts",
+    "index.ts"
+  ]
+}

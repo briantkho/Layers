@@ -1,2 +1,2 @@
 ### Layers
-# Discover your authentic fashion sense
+# Wardrobe Social Media Application Built on React Native and Express
